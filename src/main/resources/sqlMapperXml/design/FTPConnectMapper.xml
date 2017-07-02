@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.design.FtpConnectMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.design.FTPConnect">
+		<id column="ftp_id" property="id" jdbcType="BIGINT" />
+		<result column="ftp_code" property="code" jdbcType="VARCHAR" />
+		<result column="ftp_name" property="name" jdbcType="VARCHAR" />
+		<result column="ftp_type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="ftp_address" property="address" jdbcType="VARCHAR" />
+		<result column="ftp_port" property="port" jdbcType="VARCHAR" />
+		<result column="ftp_username" property="username" jdbcType="VARCHAR" />
+		<result column="ftp_password" property="password" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_ftp -->
+	<sql id="Base_Column_List">
+		ftp_id, 
+		ftp_code, 
+		ftp_name, 
+		ftp_type, 
+		
+		ftp_address,
+		ftp_port,
+		ftp_username,
+		ftp_password,
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_ftp
+		where ftp_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.design.FTPConnect">
+		update design_ftp
+		<set>
+			<if test="code != null">
+				ftp_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				ftp_name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				ftp_address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="port != null">
+				ftp_port = #{port,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				ftp_username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				ftp_password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ftp_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_ftp
+		where ftp_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 分页查询发件箱管理信息 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_ftp
+		where 1 = 1
+		<if test="condition.name != null"> 
+			and ftp_name like #{condition.name, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.code != null"> 
+			and ftp_code like #{condition.code, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_ftp
+		where
+		1=1
+		<if test="name != null"> and ftp_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and ftp_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="status != null"> and status = #{status, jdbcType=VARCHAR}</if>
+	</select>
+
+	<insert id="insert" parameterType="cn.digitalpublishing.po.design.FTPConnect">
+		insert into design_ftp
+		(ftp_id, 
+		ftp_code, 
+		ftp_name, 
+		ftp_type,
+		ftp_address,
+		ftp_port,
+		ftp_username,
+		ftp_password,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR}, 
+		#{port,jdbcType=VARCHAR}, 
+		#{username,jdbcType=VARCHAR}, 
+		#{password,jdbcType=VARCHAR}, 
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+
+</mapper>

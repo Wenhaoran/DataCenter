@@ -1,0 +1,185 @@
+/*登录页内容*/
+
+.loginBg {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.loginCon {
+    height: 330px;
+    padding-top: 6%;
+}
+
+.top img {
+    padding-top: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
+
+/*轮播图*/
+
+.loginCon .carousel {
+    width: 700px;
+    height: 330px;
+    float: left;
+    background: pink;
+}
+
+.carousel #box {
+    width: 700px;
+    height: 330px;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+}
+
+.carousel #box div {
+    width: 700px;
+    height: 330px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.carousel #box img {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel #btn {
+    position: absolute;
+    bottom: 10px;
+    left: 328px;
+    overflow: hidden;
+}
+
+.carousel #btn li {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    opacity: 0.3;
+    border-radius: 50%;
+    margin-right: 5px;
+    float: left;
+}
+
+
+/*.........*/
+
+.loginCon .username {
+    width: 368px;
+    height: 260px;
+    float: left;
+    border: 1px solid #e5e5e5;
+    position: relative;
+    background: #f8f8f8;
+    padding: 35px 60px;
+}
+
+.username p {
+    padding: 0;
+    text-indent: 0;
+    line-height: 46px;
+    padding-bottom: 24px;
+    position: relative;
+}
+
+.loginCon .username input {
+    width: 318px;
+    height: 46px;
+    border: 1px solid #e5e5e5;
+    color: #626262;
+    background: #f8f8f8;
+    font-size: 16px;
+}
+
+.loginCon .username .name,
+.loginCon .username .name2 {
+    padding-left: 48px;
+    background: url(/webgate/static/login/username.png) no-repeat 15px center;
+}
+
+.name2 {
+    display: none;
+}
+
+.loginCon .username .password {
+    padding-left: 48px;
+    background: url(/webgate/static/login/password.png) no-repeat 15px center;
+}
+
+.loginCon .username .code {
+    width: 220px;
+    float: left;
+    margin-right: 10px;
+    padding-left: 2px;
+}
+
+.loginCon .username .code a {
+    float: right;
+}
+
+.loginCon .username .next {
+    width: 17px;
+    height: 17px;
+    float: left;
+    padding-left: 10px;
+}
+
+.username a {
+    display: block;
+    float: left;
+    width: 98px;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    color: #777;
+    margin-bottom: 24px;
+}
+
+.reg a {
+    float: inherit;
+}
+
+.username .orange {
+    color: #fff;
+    background: #2e363f;
+}
+
+.username .go {
+    width: 100%;
+    font-size: 16px;
+}
+
+
+/*内容样式*/
+
+body {
+    position: relative;
+    background: url(/webgate/static/login/bg.png);
+    background-size: 100% 100%;
+}
+
+.container {
+    width: 1190px;
+    margin: 0 auto;
+}
+
+.footerOuter {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.footer {
+    width: 950px;
+    height: 90px;
+    text-align: center;
+    line-height: 90px;
+    background: #e6e8e9;
+    color: #000;
+    clear: both;
+    position: fixed;
+    bottom: 0;
+}

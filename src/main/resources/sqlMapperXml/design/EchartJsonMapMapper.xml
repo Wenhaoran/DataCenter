@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.echarts.EchartJsonMapMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.echarts.EchartJsonMap">
+		<id column="jmap_id" property="id" jdbcType="BIGINT" />
+		<result column="jmap_code" property="code" jdbcType="VARCHAR" />
+		<result column="jmap_name" property="name" jdbcType="VARCHAR" />
+		<result column="jmap_type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="echart_id" property="echartId" jdbcType="VARCHAR" />
+		<result column="exp_id" property="expId" jdbcType="VARCHAR" />
+		<result column="exp_column" property="column" jdbcType="VARCHAR" />
+		<result column="json_id" property="jsonId" jdbcType="VARCHAR" />
+		<result column="jmap_order" property="jmapOrder" jdbcType="VARCHAR" />
+		
+		<result column="rs_id" property="rsId" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_echart_json_map -->
+	<sql id="Base_Column_List">
+		jmap_id, 
+		jmap_code, 
+		jmap_name, 
+		jmap_type,
+		
+		echart_id,
+		exp_id,
+		exp_column,
+		json_id,
+		jmap_order,
+		
+		rs_id,
+		
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<select id="findListByRSId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_echart_json_map
+		where rs_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 分页查询发件箱管理信息 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_echart_json_map
+		where 1 = 1
+		<if test="condition.rsId != null"> 
+			and rs_id like #{condition.rsId, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.echartId != null"> 
+			and echart_id like #{condition.echartId, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.exportId != null"> 
+			and exp_id like #{condition.exportId, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_echart_json_map
+		where
+		jmap_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.echarts.EchartJsonMap">
+		update design_echart_json_map
+		<set>
+			<if test="code != null">
+				jmap_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				jmap_name = #{name,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="colVal != null">
+				jmap_val = #{colVal,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where jmap_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.echarts.EchartJsonMap">
+		insert into design_echart_json_map
+		(jmap_id, 
+		jmap_code, 
+		jmap_name, 
+		jmap_type,
+		echart_id,
+		exp_id,
+		exp_column,
+		json_id,
+		jmap_order,
+		rs_id,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{type,jdbcType=TINYINT}, 
+		
+		#{echartId,jdbcType=VARCHAR},
+		#{expId,jdbcType=VARCHAR},
+		#{column,jdbcType=VARCHAR},
+		#{jsonId,jdbcType=VARCHAR},
+		#{jmapOrder,jdbcType=VARCHAR},
+		#{rsId,jdbcType=VARCHAR},
+		
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_echart_json_map
+		where
+		1=1
+		<if test="rsId != null"> and rs_id = #{rsId, jdbcType=VARCHAR}</if>
+		<if test="jsonId != null"> and json_id = #{jsonId, jdbcType=VARCHAR}</if>
+		<if test="jmapOrder != null"> and jmap_order = #{jmapOrder, jdbcType=VARCHAR}</if>
+		<if test="name != null"> and jmap_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and jmap_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="type != null"> and jmap_type = #{type, jdbcType=TINYINT}</if>
+		order by jmap_order
+	</select>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_echart_json_map
+		where jmap_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

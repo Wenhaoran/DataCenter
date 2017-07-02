@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.design.DesignTableColumnMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.design.DesignTableColumn">
+		<id column="col_id" property="id" jdbcType="BIGINT" />
+		
+		<result column="col_name" property="name" jdbcType="VARCHAR" />
+		<result column="col_type" property="type" jdbcType="VARCHAR" />
+		<result column="col_comments" property="comments" jdbcType="VARCHAR" />
+		<result column="col_javaType" property="javaType" jdbcType="VARCHAR" />
+		<result column="col_javaField" property="javaField" jdbcType="VARCHAR" />
+		
+		<result column="tab_id" property="tableId" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_tableColumn -->
+	<sql id="Base_Column_List">
+		col_id, 
+		col_tableId, 
+		col_name, 
+		col_type, 
+		col_comments, 
+		col_javaType,
+		col_javaField,
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.design.DesignTableColumn">
+		update design_tableColumn
+		<set>
+			<if test="javaType != null">
+				col_javaType = #{javaType,jdbcType=VARCHAR},
+			</if>
+			<if test="javaField != null">
+				col_javaField = #{javaField,jdbcType=VARCHAR},
+			</if>
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where col_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_tableColumn
+		where col_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_tableColumn
+		where
+		col_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_tableColumn
+		where
+		1=1
+		<if test="tableId != null"> and col_tableId = #{tableId, jdbcType=VARCHAR}</if>
+		<if test="name != null"> and col_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and col_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="type != null"> and col_type = #{type, jdbcType=TINYINT}</if>
+	</select>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.design.DesignTableColumn">
+		insert into design_tableColumn
+		(col_id, 
+		col_tableId, 
+		col_name, 
+		col_type, 
+		col_comments, 
+		col_javaType,
+		col_javaField,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{tableId,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{comments,jdbcType=TINYINT}, 
+		#{javaType,jdbcType=TINYINT}, 
+		#{javaField,jdbcType=VARCHAR},
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+</mapper>

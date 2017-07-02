@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.design.DesignTableMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.design.DesignTable">
+		<id column="tab_id" property="id" jdbcType="BIGINT" />
+		
+		<result column="tab_name" property="name" jdbcType="VARCHAR" />
+		<result column="tab_tablename" property="tableName" jdbcType="VARCHAR" />
+		<result column="tab_comments" property="comments" jdbcType="VARCHAR" />
+		<result column="tab_className" property="className" jdbcType="VARCHAR" />
+		<result column="tab_type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="tab_dbid" property="dbId" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_table -->
+	<sql id="Base_Column_List">
+		tab_id, 
+		tab_name,
+		tab_tablename, 
+		tab_comments, 
+		tab_className,
+		tab_type,
+		tab_dbid,
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.design.DesignTable">
+		update design_table
+		<set>
+			<if test="name != null">
+				tab_name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="comments != null">
+				tab_comments = #{comments,jdbcType=VARCHAR},
+			</if>
+			<if test="className != null">
+				tab_className = #{className,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				tab_type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where tab_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_table
+		where
+		tab_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.design.DesignTable">
+		insert into design_table
+		(tab_id, 
+		tab_name,
+		tab_tablename, 
+		tab_comments,
+		tab_className,
+		tab_type,
+		tab_dbid,
+		
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{name,jdbcType=VARCHAR},
+		#{tableName,jdbcType=VARCHAR},
+		#{comments,jdbcType=TINYINT}, 
+		#{className,jdbcType=VARCHAR}, 
+		#{type,jdbcType=VARCHAR}, 
+		#{dbId,jdbcType=VARCHAR},
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<!-- 列表查询集合 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_table
+		where 1 = 1
+		<if test="condition.dbId != null">
+			and tab_dbid <![CDATA[=]]>
+			#{condition.dbId, jdbcType=TINYINT}
+		</if>
+	</select>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_table
+		where
+		1=1
+		<if test="name != null"> and tab_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and tab_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="type != null"> and tab_type = #{type, jdbcType=TINYINT}</if>
+		<if test="dbId != null"> and tab_dbid = #{dbId, jdbcType=VARCHAR}</if>
+		<if test="parentId != null"> and tab_parentId = #{parentId, jdbcType=VARCHAR}</if>
+	</select>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_table
+		where tab_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

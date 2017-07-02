@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.design.DeDBConnectMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.design.DeDBConnect">
+		<id column="db_id" property="id" jdbcType="BIGINT" />
+		<result column="db_code" property="code" jdbcType="VARCHAR" />
+		<result column="db_name" property="name" jdbcType="VARCHAR" />
+		<result column="db_type" property="type" jdbcType="VARCHAR" />
+		<result column="db_address" property="address" jdbcType="VARCHAR" />
+		<result column="db_port" property="port" jdbcType="VARCHAR" />
+		<result column="db_dbname" property="dbname" jdbcType="VARCHAR" />
+		<result column="db_username" property="username" jdbcType="VARCHAR" />
+		<result column="db_password" property="password" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	<!-- design_db -->
+	<sql id="Base_Column_List">
+		db_id, db_code, db_name, db_type, db_address,db_port,db_dbname,db_username,db_password,create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_db
+		where
+		db_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.design.DeDBConnect">
+		update design_db
+		<set>
+			<if test="code != null">
+				db_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				db_name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				db_address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="port != null">
+				db_port = #{port,jdbcType=VARCHAR},
+			</if>
+			<if test="dbname != null">
+				db_dbname = #{dbname,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				db_username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				db_password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where db_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_db
+		where db_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 分页查询发件箱管理信息 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_db
+		where 1 = 1
+		<if test="condition.name != null"> 
+			and db_name like #{condition.name, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.code != null"> 
+			and db_code like #{condition.code, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.dbname != null"> 
+			and db_dbname like #{condition.dbname, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_db
+		where
+		1=1
+		<if test="name != null"> and db_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and db_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="dbname != null"> and db_dbname = #{dbname, jdbcType=VARCHAR}</if>
+		<if test="status != null"> and status = #{status, jdbcType=VARCHAR}</if>
+	</select>
+
+	<insert id="insert" parameterType="cn.digitalpublishing.po.design.DeDBConnect">
+		insert into design_db
+		(db_id, 
+		db_code, 
+		db_name, 
+		db_type,
+		db_address,
+		db_port,
+		db_dbname,
+		db_username,
+		db_password,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR}, 
+		#{port,jdbcType=VARCHAR}, 
+		#{dbname,jdbcType=VARCHAR}, 
+		#{username,jdbcType=VARCHAR}, 
+		#{password,jdbcType=VARCHAR}, 
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+
+</mapper>

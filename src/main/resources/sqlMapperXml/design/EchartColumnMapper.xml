@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.echarts.EchartColumnMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.echarts.EchartColumn">
+		<id column="col_id" property="id" jdbcType="BIGINT" />
+		<result column="col_code" property="code" jdbcType="VARCHAR" />
+		<result column="col_name" property="name" jdbcType="VARCHAR" />
+		<result column="col_type" property="type" jdbcType="TINYINT" />
+		
+		<result column="echart_id" property="echartId" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_echart_column -->
+	<sql id="Base_Column_List">
+		col_id, 
+		col_code, 
+		col_name, 
+		col_type,
+		echart_id,
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<select id="findListByEchartId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_echart_column
+		where echart_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_echart_column
+		where
+		col_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.echarts.EchartColumn">
+		update design_echart_column
+		<set>
+			<if test="code != null">
+				col_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				col_name = #{name,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where col_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.echarts.EchartColumn">
+		insert into design_echart_column
+		(col_id, 
+		col_code, 
+		col_name, 
+		col_type,
+		echart_id,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{type,jdbcType=TINYINT}, 
+		#{echartId,jdbcType=VARCHAR},
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_echart_column
+		where
+		1=1
+		<if test="name != null"> and col_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and col_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="type != null"> and col_type = #{type, jdbcType=TINYINT}</if>
+		<if test="echartId != null"> and echart_id = #{echartId, jdbcType=TINYINT}</if>
+	</select>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_echart_column
+		where col_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

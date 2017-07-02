@@ -1,0 +1,286 @@
+/*登录页内容*/
+
+.loginBg {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.loginCon {
+    height: 330px;
+    padding-top: 6%;
+}
+
+.top img {
+    padding-top: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
+
+/*轮播图*/
+
+.loginCon .carousel {
+    width: 700px;
+    height: 330px;
+    float: left;
+    background: pink;
+}
+
+.carousel #box {
+    width: 700px;
+    height: 330px;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+}
+
+.carousel #box div {
+    width: 700px;
+    height: 330px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.carousel #box img {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel #btn {
+    position: absolute;
+    bottom: 10px;
+    left: 328px;
+    overflow: hidden;
+}
+
+.carousel #btn li {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    opacity: 0.3;
+    border-radius: 50%;
+    margin-right: 5px;
+    float: left;
+}
+
+
+/*.........*/
+
+.loginCon .username {
+    width: 368px;
+    height: 260px;
+    float: left;
+    border: 1px solid #e5e5e5;
+    position: relative;
+    background: #f8f8f8;
+    padding: 35px 60px;
+}
+
+.username p {
+    padding: 0;
+    text-indent: 0;
+    line-height: 46px;
+    padding-bottom: 24px;
+    position: relative;
+}
+
+.loginCon .username input {
+    width: 318px;
+    height: 46px;
+    border: 1px solid #e5e5e5;
+    color: #626262;
+    background: #f8f8f8;
+    font-size: 16px;
+}
+
+.loginCon .username .name,
+.loginCon .username .name2 {
+    padding-left: 48px;
+    background: url(../images/username.png) no-repeat 15px center;
+}
+
+.name2 {
+    display: none;
+}
+
+.loginCon .username .password {
+    padding-left: 48px;
+    background: url(../images/password.png) no-repeat 15px center;
+}
+
+.loginCon .username .code {
+    width: 220px;
+    float: left;
+    margin-right: 10px;
+    padding-left: 2px;
+}
+
+.loginCon .username .code a {
+    float: right;
+}
+
+.loginCon .username .next {
+    width: 17px;
+    height: 17px;
+    float: left;
+    padding-left: 10px;
+}
+
+.username a {
+    display: block;
+    float: left;
+    width: 98px;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    color: #777;
+    margin-bottom: 24px;
+}
+
+.reg a {
+    float: inherit;
+}
+
+.username .orange {
+    color: #fff;
+    background: #2e363f;
+}
+
+.username .go {
+    width: 100%;
+    font-size: 16px;
+}
+
+
+/*内容样式*/
+
+.body {
+    position: relative;
+    background: url(../images/bg.png);
+    background-size: 100% 100%;
+}
+
+.container {
+    width: 1190px;
+    margin: 0 auto;
+}
+
+
+/*首页*/
+
+.navbar2 {
+    min-height: 96px;
+    background: #2e363f;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.navbar2 .navbar-brand {
+    height: 96px;
+}
+
+.navbar2 .navbar-nav {
+    margin-top: 30px;
+    margin-right: 0;
+}
+
+.navbar2 .navbar-nav > li > a {
+    color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #343b42;
+    padding: 6px 15px;
+}
+
+.navbar2 .navbar-nav > li > a:hover,
+.navbar2 .navbar-nav > li > a:focus {
+    color: #fff;
+}
+
+.navbar2 .navbar-nav > li {
+    background: #1a2129;
+    border-top: 1px solid #676c71;
+    margin-right: 3px;
+}
+
+.radiusL {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.radiusR {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.con {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.part {
+    padding-bottom: 6%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.part img {
+    display: block;
+    margin: 0 auto;
+    margin-top: 19%;
+    height: 135px;
+}
+
+.part p {
+    text-align: center;
+    color: #fff;
+    font-size: 34px;
+    margin-top: 3%;
+}
+
+.part1 {
+    background: #8dc253;
+}
+
+.part2 {
+    background: #3baedb;
+}
+
+.part3 {
+    background: #64b7f0;
+}
+
+.part4 {
+    background: #db4454;
+}
+
+.part1:hover {
+    background: rgba(141, 194, 83, 0.9);
+}
+
+.part2:hover {
+    background: rgba(59, 174, 219, 0.9);
+}
+
+.part3:hover {
+    background: rgba(100, 183, 240, 0.9);
+}
+
+.part4:hover {
+    background: rgba(219, 68, 84, 0.9);
+}
+
+.introduce {
+    width: 100%;
+    height: 80%;
+    background: url(../image/bgtr.png) no-repeat;
+    background-size: 100% 100%;
+    margin-top: 25%;
+    padding-left: 12%;
+    padding-top: 3%;
+}
+
+.introduce div {
+    display: none;
+}

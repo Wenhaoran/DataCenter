@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.design.DataObjectMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.design.DataObject">
+		<id column="obj_id" property="id" jdbcType="BIGINT" />
+		<result column="obj_code" property="code" jdbcType="VARCHAR" />
+		<result column="obj_name" property="name" jdbcType="VARCHAR" />
+		<result column="obj_description" property="description" jdbcType="VARCHAR" />
+		<result column="obj_leaf" property="leaf" jdbcType="TINYINT" />
+		<result column="obj_type" property="type" jdbcType="TINYINT" />
+		<result column="obj_parentId" property="pId" jdbcType="VARCHAR" />
+		<result column="obj_tablename" property="tableName" jdbcType="VARCHAR" />
+		<result column="obj_dbid" property="dbId" jdbcType="VARCHAR" />
+		
+		<result column="obj_dbname" property="dbName" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_obj -->
+	<sql id="Base_Column_List">
+		obj_id, 
+		obj_code, 
+		obj_name, 
+		obj_description, 
+		obj_leaf,
+		obj_type,
+		obj_parentId,
+		obj_tablename,
+		obj_dbid,
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_obj
+		where
+		obj_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.design.DataObject">
+		update design_obj
+		<set>
+			<if test="code != null">
+				obj_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				obj_name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				obj_description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="tableName != null">
+				obj_tablename = #{tableName,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where obj_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findListByObjectId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_obj
+		where obj_parentId = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.design.DataObject">
+		insert into design_obj
+		(obj_id, 
+		obj_code, 
+		obj_name, 
+		obj_description,
+		obj_leaf,
+		obj_type,
+		obj_parentId,
+		obj_tablename,
+		obj_dbid,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{leaf,jdbcType=TINYINT}, 
+		#{type,jdbcType=TINYINT}, 
+		#{pId,jdbcType=VARCHAR}, 
+		#{tableName,jdbcType=VARCHAR}, 
+		#{dbId,jdbcType=VARCHAR},
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<!-- 根据systemId 系统ID ，查询 当前系统下所有的资源 的 根节点 -->
+	<select id="findResourceByDBIdAndPidNull" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM
+			design_obj
+		WHERE 
+			1 = 1
+		AND obj_parentId = '0'
+		AND obj_dbid <![CDATA[=]]>
+		#{dbId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_obj
+		where
+		1=1
+		<if test="name != null"> and obj_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and obj_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="type != null"> and obj_type = #{type, jdbcType=TINYINT}</if>
+		<if test="dbId != null"> and obj_dbid = #{dbId, jdbcType=VARCHAR}</if>
+		<if test="parentId != null"> and obj_parentId = #{parentId, jdbcType=VARCHAR}</if>
+	</select>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_obj
+		where obj_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

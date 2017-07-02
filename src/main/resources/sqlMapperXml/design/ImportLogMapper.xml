@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.imp.ImportLogMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.imp.ImportLog">
+	
+		<id column="id" property="id" jdbcType="BIGINT" />
+		
+		<result column="log_name" property="name" jdbcType="VARCHAR" />
+		<result column="log_code" property="code" jdbcType="VARCHAR" />
+		<result column="log_type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="log_fileName" property="fileName" jdbcType="VARCHAR" />
+		<result column="log_fileType" property="fileType" jdbcType="VARCHAR" />
+		<result column="log_roleId" property="roleId" jdbcType="VARCHAR" />
+		<result column="log_objName" property="objName" jdbcType="VARCHAR" />
+		<result column="log_objId" property="objId" jdbcType="VARCHAR" />
+		<result column="log_objPath" property="objPath" jdbcType="VARCHAR" />
+		<result column="db_id" property="dbId" jdbcType="VARCHAR" />
+		<result column="db_table" property="table" jdbcType="VARCHAR" />
+		<result column="log_errorinfo" property="errorInfo" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_import_log -->
+	<sql id="Base_Column_List">
+		id, 
+		log_name, 
+		log_code, 
+		log_type, 
+		
+		log_fileName, 
+		log_fileType, 
+		log_roleId, 
+		log_objName,
+		log_objId,
+		log_objPath,
+		db_id,
+		db_table,
+		log_errorinfo,
+		
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.imp.ImportLog">
+		insert into design_import_log
+		( id, 
+		log_name, 
+		log_code, 
+		log_type, 
+		
+		log_fileName, 
+		log_fileType, 
+		log_roleId, 
+		log_objName,
+		log_objId,
+		log_objPath,
+		db_id,
+		db_table,
+		log_errorinfo,
+		
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{name,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		
+		#{fileName,jdbcType=VARCHAR}, 
+		#{fileType,jdbcType=VARCHAR}, 
+		#{roleId,jdbcType=VARCHAR}, 
+		#{objName,jdbcType=VARCHAR}, 
+		#{objId,jdbcType=VARCHAR}, 
+		#{objPath,jdbcType=VARCHAR}, 
+		#{dbId,jdbcType=VARCHAR}, 
+		#{table,jdbcType=VARCHAR}, 
+		#{errorInfo,jdbcType=VARCHAR}, 
+		
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<!-- 分页查询发件箱管理信息 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_log
+		where 1 = 1
+		<if test="condition.name != null"> 
+			and log_name like #{condition.name, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.code != null"> 
+			and log_code like #{condition.code, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.roleId != null"> 
+			and log_roleId like #{condition.roleId, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.fileType != null"> 
+			and log_fileType like #{condition.fileType, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_import_log
+		where
+		1=1
+		<if test="name != null"> and col_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and col_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="status != null"> and status = #{status, jdbcType=VARCHAR}</if>
+	</select>
+	
+</mapper>

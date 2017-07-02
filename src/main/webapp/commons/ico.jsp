@@ -1,0 +1,1 @@
+<link rel="shortcut icon" href="${ctx}/images/login/CNPe.ico" type="image/x-icon" />

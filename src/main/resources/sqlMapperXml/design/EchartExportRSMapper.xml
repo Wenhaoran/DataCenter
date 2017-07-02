@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.echarts.EchartExportRSMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.echarts.EchartExportRS">
+		<id column="rs_id" property="id" jdbcType="BIGINT" />
+		
+		<result column="rs_name" property="name" jdbcType="VARCHAR" />
+		<result column="rs_code" property="code" jdbcType="VARCHAR" />
+		<result column="rs_type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="echart_id" property="echartId" jdbcType="VARCHAR" />
+		<result column="exp_id" property="exportId" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_echart_exp_rs -->
+	<sql id="Base_Column_List">
+		rs_id, 
+		rs_name,
+		rs_code,
+		rs_type,
+		
+		echart_id,
+		exp_id,
+		
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_echart_exp_rs
+		where
+		rs_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.echarts.EchartExportRS">
+		insert into design_echart_exp_rs
+		(rs_id, 
+		rs_name,
+		rs_code,
+		rs_type,
+		
+		echart_id,
+		exp_id,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		
+		#{name,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		
+		#{echartId,jdbcType=VARCHAR},
+		#{exportId,jdbcType=VARCHAR},
+		
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_echart_exp_rs
+		where
+		1=1
+		<if test="type != null"> and rs_type = #{type, jdbcType=TINYINT}</if>
+		<if test="echartId != null"> and echart_id = #{echartId, jdbcType=TINYINT}</if>
+		<if test="exportId != null"> and exp_id = #{exportId, jdbcType=TINYINT}</if>
+	</select>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_echart_exp_rs
+		where rs_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

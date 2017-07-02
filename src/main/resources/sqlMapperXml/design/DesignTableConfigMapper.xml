@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.design.DesignTableConfigMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+	<!-- -(゜-゜)つロ乾杯~ -->
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.design.DesignTableConfig">
+		<id column="conf_id" property="id" jdbcType="BIGINT" />
+		<result column="tab_id" property="tableId" jdbcType="VARCHAR" />
+		
+		<result column="conf_hostName" property="hostName" jdbcType="VARCHAR" />
+		<result column="conf_port" property="port" jdbcType="VARCHAR" />
+		<result column="conf_username" property="username" jdbcType="VARCHAR" />
+		<result column="conf_password" property="password" jdbcType="VARCHAR" />
+		<result column="conf_pathname" property="pathname" jdbcType="VARCHAR" />
+		<result column="conf_originfilename" property="originfilename" jdbcType="VARCHAR" />
+		
+		<result column="conf_packagePath" property="packagePath" jdbcType="VARCHAR" />
+		<result column="conf_projectName" property="projectName" jdbcType="VARCHAR" />
+		<result column="conf_moduleName" property="moduleName" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_tableConfig -->
+	<sql id="Base_Column_List">
+		conf_id, 
+		
+		conf_hostName,
+		conf_port,
+		conf_username,
+		conf_password,
+		conf_pathname,
+		conf_originfilename,
+		
+		conf_packagePath,
+		conf_projectName, 
+		conf_moduleName, 
+		
+		tab_id,
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.design.DesignTableConfig">
+		update design_tableConfig
+		<set>
+			<if test="packagePath != null">conf_packagePath = #{packagePath,jdbcType=VARCHAR},</if>
+			<if test="projectName != null">conf_projectName = #{projectName,jdbcType=VARCHAR},</if>
+			<if test="moduleName != null">conf_moduleName = #{moduleName,jdbcType=VARCHAR},</if>
+			<if test="hostName != null">conf_hostName = #{hostName,jdbcType=VARCHAR},</if>
+			<if test="port != null">conf_port = #{port,jdbcType=VARCHAR},</if>
+			<if test="username != null">conf_username = #{username,jdbcType=VARCHAR},</if>
+			<if test="password != null">conf_password = #{password,jdbcType=VARCHAR},</if>
+			<if test="pathname != null">conf_pathname = #{pathname,jdbcType=VARCHAR},</if>
+			
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where conf_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getConfigByTableId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_tableConfig
+		where tab_id = #{tableId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_tableConfig
+		where
+		conf_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_tableConfig
+		where
+		1=1
+		<if test="tableId != null"> and tab_id = #{tableId, jdbcType=VARCHAR}</if>
+		<if test="name != null"> and conf_name = #{name, jdbcType=VARCHAR}</if>
+	</select>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.design.DesignTableConfig">
+		insert into design_tableConfig
+		(conf_id, 
+		
+		conf_hostName,
+		conf_port,
+		conf_username,
+		conf_password,
+		conf_pathname,
+		conf_originfilename,
+		
+		conf_packagePath,
+		conf_projectName, 
+		conf_moduleName, 
+		
+		tab_id,
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		
+		#{hostName,jdbcType=VARCHAR},
+		#{port,jdbcType=VARCHAR},
+		#{username,jdbcType=VARCHAR}, 
+		#{password,jdbcType=VARCHAR},
+		#{pathname,jdbcType=VARCHAR},
+		#{originfilename,jdbcType=VARCHAR},
+		
+		#{packagePath,jdbcType=VARCHAR},
+		#{projectName,jdbcType=VARCHAR},
+		#{moduleName,jdbcType=VARCHAR},
+		
+		#{tableId,jdbcType=VARCHAR},
+		
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_tableConfig
+		where conf_id = #{id,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

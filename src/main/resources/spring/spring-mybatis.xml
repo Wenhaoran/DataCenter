@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 扫描service -->
+    <context:component-scan base-package="cn.digitalpublishing.service,quartz.cn.digitalpublishing.service"/>
+    
+    <!-- 阿里数据源配置 base dataSource -->
+    <bean name="baseDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" /> 
+		<property name="url" value="${jdbc.url}"/> 
+		<property name="username" value="${jdbc.username}" /> 
+		<property name="password" value="${jdbc.password}" /> 
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="50" />
+        <property name="maxActive" value="500" />
+        <property name="minIdle" value="50" />
+        <property name="maxWait" value="30000" />
+        <property name="validationQuery" value="select sysdate from dual " />
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true" />  
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+        <!--申请连接时执行validationQuery检测连接是否有效，-->     
+        <property name="testOnBorrow" value="false" />
+        <!--归还连接时执行validationQuery检测连接是否有效，-->  
+        <property name="testOnReturn" value="false" />
+        <!--申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。-->  
+        <property name="testWhileIdle" value="true" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->  
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <!--使用非公平锁--> 
+        <property name="useUnfairLock" value="true"/>
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="true" />
+        <!-- 超时时间；单位为秒。180秒=3分钟 -->
+        <property name="removeAbandonedTimeout" value="180" />
+        <!-- 关闭abanded连接时输出错误日志 --> 
+        <property name="logAbandoned" value="true" />
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="stat,wall" />
+    </bean>
+    
+    <!-- spring整合mybatis （mybatis-spring项目提供整合类） -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="baseDataSource"></property>
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations">
+            <array>
+                <value>classpath*:/sqlMapperXml/design/*.xml</value>
+                <value>classpath*:/sqlMapperXml/quartz/*.xml</value>
+            </array>
+        </property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+    </bean>
+
+    <!-- MyBatis 动态实现  -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 对Dao 接口动态实现，需要知道接口在哪  -->
+        <property name="basePackage" value="cn.digitalpublishing.mapper,quartz.cn.digitalpublishing.mapper"/>
+    </bean>
+
+    <!-- 事务管理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="baseDataSource"></property>
+    </bean>
+
+    <!-- 事务管理 属性 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+        	<!-- <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="select*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="query*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="export*" propagation="REQUIRED" read-only="true"/> -->
+            <tx:method name="find*" propagation="REQUIRED" />
+            <tx:method name="get*" propagation="REQUIRED" />
+            <tx:method name="select*" propagation="REQUIRED" />
+            <tx:method name="query*" propagation="REQUIRED" />
+            <tx:method name="export*" propagation="REQUIRED" />
+            <tx:method name="send*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="edit*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="import*" propagation="REQUIRED"/>
+            <tx:method name="create*" propagation="REQUIRED"/>
+            <tx:method name="pass*" propagation="REQUIRED"/>
+            <tx:method name="refuse*" propagation="REQUIRED"/>
+            <tx:method name="logoff*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 配置切面 -->
+    <aop:config>
+        <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* cn.digitalpublishing.service..*.*(..))"/>
+        <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* quartz.cn.digitalpublishing.service..*.*(..))"/>
+    </aop:config>
+</beans>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.design.DataFieldMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.design.DataField">
+		<id column="field_id" property="id" jdbcType="BIGINT" />
+		<result column="field_code" property="code" jdbcType="VARCHAR" />
+		<result column="field_name" property="name" jdbcType="VARCHAR" />
+		<result column="field_type" property="type" jdbcType="VARCHAR" />
+		<result column="field_size" property="size" jdbcType="VARCHAR" />
+		<result column="field_must" property="must" jdbcType="TINYINT" />
+		<result column="field_def" property="def" jdbcType="VARCHAR" />
+		<result column="field_description" property="description" jdbcType="VARCHAR" />
+		
+		<result column="field_reftable" property="refTable" jdbcType="VARCHAR" />
+		<result column="field_reffield" property="refField" jdbcType="VARCHAR" />
+		
+		<result column="field_tableid" property="tableId" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_field -->
+	<sql id="Base_Column_List">
+		field_id, 
+		field_code, field_name, field_type , field_size , field_must , field_def , field_description ,
+		field_reftable,field_reffield,
+		field_tableid,
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.design.DataField">
+		update design_field
+		<set>
+			<if test="code != null">
+				field_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				field_name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				field_type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="size != null">
+				field_size = #{size,jdbcType=VARCHAR},
+			</if>
+			<if test="refTable != null">
+				field_reftable = #{refTable,jdbcType=VARCHAR},
+			</if>
+			<if test="refField != null">
+				field_reffield = #{refField,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			
+		</set>
+		where field_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_field
+		where field_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_field
+		where
+		field_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_field
+		where
+		1=1
+		<if test="code != null"> and field_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="tableId != null"> and field_tableid = #{tableId, jdbcType=VARCHAR}</if>
+	</select>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.design.DataField">
+		insert into design_field
+		(field_id, 
+		field_code, 
+		field_name, 
+		field_type,
+		field_size,
+		field_must,
+		field_def,
+		field_description,
+		field_reftable,
+		field_reffield,
+		field_tableid,
+		
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		#{size,jdbcType=VARCHAR}, 
+		#{must,jdbcType=TINYINT},
+		#{def,jdbcType=VARCHAR}, 
+		#{description,jdbcType=VARCHAR}, 
+		#{refTable,jdbcType=VARCHAR}, 
+		#{refField,jdbcType=VARCHAR}, 
+		#{tableId,jdbcType=VARCHAR}, 
+		
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+	<!-- 分页查询发件箱管理信息 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_field
+		where 1 = 1
+		<if test="condition.name != null"> 
+			and field_name like #{condition.name, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.code != null"> 
+			and field_code like #{condition.code, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.tableId != null"> 
+			and field_tableid like #{condition.tableId, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+</mapper>

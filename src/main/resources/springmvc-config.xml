@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+    <!-- 启用CGliB -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    
+    <!-- 自动搜索@Controller标注的类 -->
+	<!-- <context:component-scan base-package="cn.digitalpublishing.springmvc.controller" /> -->
+	<context:component-scan base-package="cn.digitalpublishing.*,quartz.cn.digitalpublishing.*" />
+    
+    <!-- 配置结果页面 前缀和后缀 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="10"></property>
+        <property name="prefix" value="/views/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!-- 配置哪些是静态资源，缺省Servlet 直接返回 -->
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="31556926"/>
+    <mvc:resources mapping="/views/echarts/base/**" location="/views/echarts/base/" cache-period="31556926"/>
+    <mvc:resources mapping="/favicon.ico" location="/static/style/images/favicon.ico" cache-period="31556926"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="false">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+            <ref bean="jacksonMessageConverter" />
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+	<!-- 为了防止重复提交 -->
+	<mvc:interceptors>  
+		<mvc:interceptor>  
+        	<mvc:mapping path="/**" />  
+        	<bean class="cn.digitalpublishing.util.tokenInterceptor.TokenInterceptor" />  
+    	</mvc:interceptor>  
+    </mvc:interceptors>
+    
+    <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+        <property name="objectMapper" ref="objectMapper" />
+    </bean>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="timeZone">
+            <bean class="java.util.TimeZone" factory-method="getTimeZone" >
+                <constructor-arg value="GMT+08"/>
+            </bean>
+        </property>
+        <property name="dateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件总大小限制 -->
+        <property name="maxUploadSize" value="10000000"></property>
+    </bean>
+    
+    
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<!-- 设置为true以忽略对Accept Header的支持-->
+		<property name="ignoreAcceptHeader" value="true" />
+		<!-- 在没有扩展名时即: "/user/1" 时的默认展现形式 -->
+		<property name="defaultContentType" value="text/html" />
+		<!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+				<entry key="xml" value="application/xml" />
+			</map>
+		</property>
+		<property name="favorParameter" value="false" />
+		<property name="viewResolvers">
+			<list>
+				<ref bean="viewResolver" />
+				<ref bean="beanNameViewResolver" />
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<!-- <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" /> -->
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<constructor-arg>
+						<bean class="org.springframework.oxm.xstream.XStreamMarshaller" />
+					</constructor-arg>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!--根据 controller 返回的字符串 找到viewResolver -->
+	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="2"></property>
+	</bean>
+
+</beans>

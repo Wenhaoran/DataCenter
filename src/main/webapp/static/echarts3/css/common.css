@@ -1,0 +1,236 @@
+html body {
+    font-family: 'Microsoft Yahei', 'Tahoma', 'Simsun';
+    font-size: 14px;
+    background: #eee;
+    color: #333;
+    line-height: 22px;
+    width: 100%;
+}
+
+.container {
+    width: 95%;
+    margin: 0 auto;
+}
+
+.kong {
+    width: 100%;
+    height: 48px;
+    background: #fff;
+}
+
+.title {
+    width: 100%;
+    height: 38px;
+    background: #e5e5e5;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    line-height: 38px;
+    font-size: 16px;
+}
+
+.title img {
+    vertical-align: middle;
+}
+
+.con {
+    margin-top: 25px;
+}
+
+.tabTit ul {
+    overflow: hidden;
+    border-bottom: 1px solid #a3a3a3;
+}
+
+.tabTit li {
+    height: 34px;
+    float: left;
+}
+
+.tabTit li a {
+    float: left;
+    padding: 0 50px;
+    border-right: 1px solid #a3a3a3;
+    margin-bottom: 12px;
+}
+
+.tabTit .active {
+    border-bottom: 2px solid #03a9f5;
+}
+
+.tabTit .active a {
+    color: #03a9f5;
+}
+
+.block {
+    width: 100%;
+    border: 1px solid #d2d2d2;
+    margin-top: 15px;
+}
+
+.block .blockTit {
+    width: 98%;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #d2d2d2;
+    background: url(../images/blockTitbg.png);
+    padding: 0 1%;
+    color: #03a9f5;
+}
+
+.block .blockCon1 {
+    background: #f9f9f9;
+    padding: 25px 15px;
+}
+
+.block .blockCon1 label {
+    padding-right: 20px;
+}
+
+.form-control {
+    width: 9%;
+    height: 24px;
+    margin-left: 2px;
+    margin-right: 5px;
+    display: inline;
+    padding: 0 12px;
+}
+
+.btn {
+    border: 0;
+    padding: 7px 15px;
+    color: #fff;
+    margin-right: 18px;
+}
+
+.blueBtn {
+    background: #03a9f5;
+}
+
+.blueBtn2 {
+    background: #63ceff;
+}
+
+.blueBtn3 {
+    background: #007eb7;
+}
+
+.greyBtn {
+    background: #00af8c;
+}
+
+.redBtn {
+    background: #e7513f;
+}
+
+.table {
+    width: 100%;
+}
+
+.table th {
+    background: #e2e2e2;
+    font-weight: 600;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+    padding: 4px 8px;
+}
+
+.table-bordered>tbody>tr>td,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>td,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>thead>tr>th {
+    border: 1px solid #d2d2d2;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.block2 {
+	margin-left: 50px;
+    width: 100%;
+    overflow:hidden;
+    padding-top: 20px;
+}
+
+.topic {
+    width: 20%;
+    height: 155px;
+    background: red;
+    float: left;
+    margin-right: 5%;
+    border-radius: 5px;
+}
+
+@media (max-width: 1200px) {
+    .topic {
+        height: 182px;
+    }
+}
+
+@media (max-width: 960px) {
+    .topic {
+        height: 145px;
+    }
+}
+
+/* .topic:last-child { */
+/*     margin: 0px; */
+/* } */
+
+.topic h4,
+.topic p {
+    width: 50%;
+    color: #fff;
+    padding-left: 10%;
+}
+
+.topic h4 {
+    font-size: 38px;
+    padding-top: 12%;
+    padding-bottom: 10%;
+}
+
+.topic p {
+    font-size: 22px;
+}
+
+.topic1 {
+    background: #e94a3a url(../images/bg1.png) no-repeat 80% 75%;
+}
+
+.topic2 {
+    background: #1abd9d url(../images/bg2.png) no-repeat 80% 75%;
+    margin-left: -50px;
+}
+
+.topic3 {
+	margin-left: -50px;
+    background: #ffa130 url(../images/bg3.png) no-repeat 80% 75%;
+}
+.topic4 {
+    background: #ffa130 url(../images/huikuanjine.png) no-repeat 80% 75%;
+}
+.topic5 {
+    background: #ffa130 url(../images/jingshiyang.png) no-repeat 80% 75%;
+}
+.topic6 {
+    background: #ffa130 url(../images/kucunpinzhongshu.png) no-repeat 80% 75%;
+}
+.topic7 {
+    background: #ffa130 url(../images/zongkucun.png) no-repeat 80% 75%;
+}
+.topic8 {
+    background: #ffa130 url(../images/zongshiyanghetuihuoshiyang.png) no-repeat 80% 75%;
+}

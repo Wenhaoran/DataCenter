@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.imp.ImportRoleDetailMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.imp.ImportRoleDetail">
+		<id column="detail_id" property="id" jdbcType="BIGINT" />
+		
+		<result column="detail_name" property="name" jdbcType="VARCHAR" />
+		<result column="detail_code" property="code" jdbcType="VARCHAR" />
+		<result column="detail_type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="detail_roleid" property="roleId" jdbcType="VARCHAR" />
+		<result column="detail_mappedtype" property="mappedType" jdbcType="VARCHAR" />
+		<result column="detail_objid" property="objId" jdbcType="VARCHAR" />
+		<result column="detail_columnid" property="columnId" jdbcType="VARCHAR" />
+		<result column="detail_importRTId" property="importRTId" jdbcType="VARCHAR" />
+		<result column="detail_tableColumn" property="tableColumn" jdbcType="VARCHAR" />
+		<result column="detail_columnType" property="columnType" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_import_role_detail -->
+	<sql id="Base_Column_List">
+		detail_id, 
+		detail_name, 
+		detail_code, 
+		detail_type, 
+		
+		detail_roleid, 
+		detail_mappedtype, 
+		detail_objid, 
+		detail_columnid, 
+		detail_importRTId, 
+		detail_tableColumn,
+		detail_columnType,
+		
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<!-- 分页查询发件箱管理信息 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_role_detail
+		where 1 = 1
+		<if test="condition.name != null"> 
+			and detail_name like #{condition.name, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.code != null"> 
+			and detail_code like #{condition.code, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.roleId != null"> 
+			and detail_roleid like #{condition.roleId, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.rtId != null"> 
+			and detail_importRTId like #{condition.rtId, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<select id="findListByKeyRTId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_role_detail
+		where detail_objid = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findListByRTId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_role_detail
+		where detail_importRTId = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findListByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_role_detail
+		where detail_roleid = #{roleId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_import_role_detail
+		where
+		1=1
+		<if test="roleId != null"> and detail_roleid = #{roleId, jdbcType=VARCHAR}</if>
+		<if test="columnId != null"> and detail_columnid = #{columnId, jdbcType=VARCHAR}</if>
+		<if test="rtId != null"> and detail_importRTId = #{rtId, jdbcType=VARCHAR}</if>
+		<if test="tableColumn != null"> and detail_tableColumn = #{tableColumn, jdbcType=VARCHAR}</if>
+		
+		<if test="name != null"> and detail_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and detail_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="type != null"> and detail_type = #{type, jdbcType=VARCHAR}</if>
+		<if test="status != null"> and status = #{status, jdbcType=VARCHAR}</if>
+	</select>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.imp.ImportRoleDetail">
+		update design_import_role_detail
+		<set>
+		
+			<if test="name != null">
+				detail_name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				detail_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				detail_type = #{type,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where detail_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_role_detail
+		where detail_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_import_role_detail
+		where detail_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.imp.ImportRoleDetail">
+		insert into design_import_role_detail
+		(detail_id, 
+		detail_name, 
+		detail_code, 
+		detail_type, 
+		
+		detail_roleid, 
+		detail_mappedtype, 
+		detail_objid, 
+		detail_columnid, 
+		detail_importRTId, 
+		detail_tableColumn,
+		detail_columnType,
+		
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{name,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		
+		#{roleId,jdbcType=VARCHAR}, 
+		#{mappedType,jdbcType=VARCHAR}, 
+		#{objId,jdbcType=VARCHAR}, 
+		#{columnId,jdbcType=VARCHAR}, 
+		#{importRTId,jdbcType=VARCHAR}, 
+		#{tableColumn,jdbcType=VARCHAR}, 
+		#{columnType,jdbcType=VARCHAR}, 
+		
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+</mapper>

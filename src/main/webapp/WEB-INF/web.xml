@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>classpath:logback.xml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>design</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>/static/*,*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+		</init-param>
+		<init-param>
+			<param-name>sessionStatEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>sessionStatMaxCount</param-name>
+			<param-value>1000</param-value>
+		</init-param>
+		<init-param>
+			<param-name>profileEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- <filter>
+		<filter-name>permissionFilter</filter-name>
+		<filter-class>
+			authen.cn.digitalpublishing.filter.PermissionFilter</filter-class>
+		<init-param>
+			<param-name>resourceURL</param-name>
+			<param-value>/pages/rest/getPermissions</param-value>
+		</init-param>
+		<init-param>
+			<param-name>accountInfoURL</param-name>
+			<param-value>/pages/rest/getAccountInfo</param-value>
+		</init-param>
+		<init-param>
+			<param-name>loginURL</param-name>
+			<param-value></param-value>
+		</init-param>
+		<init-param>
+			<param-name>functionURL</param-name>
+			<param-value>/pages/rest/getFunctions</param-value>
+		</init-param>
+		<init-param>
+			<param-name>roleInfoURL</param-name>
+			<param-value>/pages/rest/getRoles.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>promptURL</param-name>
+			<param-value>/pages/common/prompt</param-value>
+		</init-param>
+		<init-param>
+			<param-name>functionMapName</param-name>
+			<param-value>functionMap</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pt_accountInfo</param-name>
+			<param-value>pt_accountInfo</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pt_ticket</param-name>
+			<param-value>pt_ticket</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pt_ticket_param</param-name>
+			<param-value>ticket</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pt_role_id</param-name>
+			<param-value>roleId</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pt_msg</param-name>
+			<param-value>pt_msg</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pt_msg_code</param-name>
+			<param-value>pt_msg_code</param-value>
+		</init-param>
+		<init-param>
+			<param-name>resourceFilterParam</param-name>
+			<param-value>pt_rtype</param-value>
+		</init-param>
+		<init-param>
+			<param-name>resourceFilterType</param-name>
+			<param-value>m</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>permissionFilter</filter-name>
+		<url-pattern>/pages/*</url-pattern>
+	</filter-mapping> -->
+
+	<!-- 参数加载 Start -->
+	<servlet>
+		<servlet-name>InitParam</servlet-name>
+		<servlet-class>cn.digitalpublishing.servlet.ParamConfig</servlet-class>
+		<init-param>
+			<param-name>Path</param-name>
+			<param-value>/WEB-INF/classes/config/param.properties</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitParam</servlet-name>
+		<url-pattern>/InitParam</url-pattern>
+	</servlet-mapping>
+	<!-- 参数加载 End -->
+
+
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+		<init-param>
+			<param-name>loginUsername</param-name>
+			<param-value>webgate</param-value>
+		</init-param>
+		<init-param>
+			<param-name>loginPassword</param-name>
+			<param-value>webgate</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/classes/spring-config.xml
+		</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				/WEB-INF/classes/springmvc-config.xml
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>*.json</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>*.xml</url-pattern>
+	</servlet-mapping>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/views/error/404.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/views/error/500.jsp</location>
+	</error-page>
+
+	<session-config>
+		<session-timeout>-1</session-timeout>
+	</session-config>
+
+</web-app>

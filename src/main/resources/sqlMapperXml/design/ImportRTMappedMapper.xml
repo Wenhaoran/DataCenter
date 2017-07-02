@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.digitalpublishing.mapper.imp.ImportRTMappedMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="cn.digitalpublishing.po.imp.ImportRTMapped">
+	
+		<id column="rt_id" property="id" jdbcType="BIGINT" />
+		
+		<result column="rt_name" property="name" jdbcType="VARCHAR" />
+		<result column="rt_code" property="code" jdbcType="VARCHAR" />
+		<result column="rt_type" property="type" jdbcType="VARCHAR" />
+		
+		<result column="role_id" property="importRoleId" jdbcType="VARCHAR" />
+		
+		<result column="rt_dbid" property="dbId" jdbcType="VARCHAR" />
+		<result column="rt_dbtable" property="dbTable" jdbcType="VARCHAR" />
+		
+		<result column="rt_sql" property="sql" jdbcType="VARCHAR" />
+		<result column="rt_params" property="paramIds" jdbcType="VARCHAR" />
+		
+		<result column="rt_insertSort" property="insertSort" jdbcType="VARCHAR" />
+		
+		<result column="rt_mstype" property="msType" jdbcType="VARCHAR" />
+		
+		<result column="create_id" property="createId" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_id" property="updateId" jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- design_import_rt_mapped -->
+	<sql id="Base_Column_List">
+		rt_id, 
+		rt_name, 
+		rt_code, 
+		rt_type,
+		
+		role_id, 
+		
+		rt_dbid, 
+		rt_dbtable,
+		
+		rt_sql,
+		rt_params, 
+		
+		rt_insertSort,
+		
+		rt_mstype, 
+		
+		create_id,create_date,update_id,update_date,status
+	</sql>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		design_import_rt_mapped
+		where
+		1=1
+		<if test="name != null"> and rt_name = #{name, jdbcType=VARCHAR}</if>
+		<if test="code != null"> and rt_code = #{code, jdbcType=VARCHAR}</if>
+		<if test="type != null"> and rt_type = #{type, jdbcType=VARCHAR}</if>
+		<if test="dbId != null"> and rt_dbid = #{dbId, jdbcType=VARCHAR}</if>
+		<if test="dbTable != null"> and rt_dbtable = #{dbTable, jdbcType=VARCHAR}</if>
+		<if test="roleId != null"> and role_id = #{roleId, jdbcType=VARCHAR}</if>
+		<if test="status != null"> and status = #{status, jdbcType=VARCHAR}</if>
+	</select>
+	
+	<select id="findListByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_rt_mapped
+		where role_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateById" parameterType="cn.digitalpublishing.po.imp.ImportRTMapped">
+		update design_import_rt_mapped
+		<set>
+		
+			<if test="name != null">
+				rt_name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				rt_code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				rt_type = #{type,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="sql != null">
+				rt_sql = #{sql,jdbcType=VARCHAR},
+			</if>
+			<if test="paramIds != null">
+				rt_params = #{paramIds,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="insertSort != null">
+				rt_insertSort = #{insertSort,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="updateId != null">
+				update_id = #{updateId,jdbcType=VARCHAR},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where rt_id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_rt_mapped
+		where rt_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		design_import_rt_mapped
+		where rt_id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 分页查询发件箱管理信息 -->
+	<select id="findPageCondition" resultMap="BaseResultMap" parameterType="PageInfo">
+		select
+		<include refid="Base_Column_List" />
+		from design_import_rt_mapped
+		where 1 = 1
+		<if test="condition.name != null"> 
+			and rt_name like #{condition.name, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.code != null"> 
+			and rt_code like #{condition.code, jdbcType=VARCHAR}
+		</if>
+		<if test="condition.roleId != null"> 
+			and role_id like #{condition.roleId, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="cn.digitalpublishing.po.imp.ImportRTMapped">
+		insert into design_import_rt_mapped
+		(rt_id, 
+		rt_name, 
+		rt_code, 
+		rt_type,
+		
+		rt_dbid, 
+		rt_dbtable, 
+		role_id, 
+		rt_mstype, 
+		
+		rt_sql,
+		rt_params, 
+		
+		rt_insertSort, 
+		
+		create_id,
+		create_date,
+		status)
+		values
+		(replace(uuid(),'-',''), 
+		#{name,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{type,jdbcType=VARCHAR},
+		
+		#{dbId,jdbcType=VARCHAR}, 
+		#{dbTable,jdbcType=VARCHAR}, 
+		#{importRoleId,jdbcType=VARCHAR}, 
+		#{msType,jdbcType=VARCHAR}, 
+		
+		#{sql,jdbcType=VARCHAR}, 
+		#{paramIds,jdbcType=VARCHAR},
+		#{insertSort,jdbcType=VARCHAR}, 
+		
+		#{createId,jdbcType=VARCHAR}, 
+		NOW(),
+		#{status,jdbcType=TINYINT})
+	</insert>
+	
+</mapper>

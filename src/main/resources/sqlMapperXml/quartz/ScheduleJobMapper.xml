@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="quartz.cn.digitalpublishing.mapper.ScheduleJobMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+	<resultMap id="BaseResultMap" type="quartz.cn.digitalpublishing.model.ScheduleJob">
+	
+		<id column="schedule_job_id" property="scheduleJobId" jdbcType="BIGINT" />
+		
+		<result column="job_name" property="jobName" jdbcType="VARCHAR" />
+		<result column="alias_name" property="aliasName" jdbcType="VARCHAR" />
+		<result column="job_group" property="jobGroup" jdbcType="VARCHAR" />
+		<result column="job_trigger" property="jobTrigger" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="cron_expression" property="cronExpression" jdbcType="VARCHAR" />
+		<result column="is_sync" property="isSync" jdbcType="TIMESTAMP" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="TIMESTAMP" />
+		<result column="gmt_create" property="gmtCreate" jdbcType="TINYINT" />
+		<result column="gmt_modify" property="gmtModify" jdbcType="TINYINT" />
+	</resultMap>
+	
+	<!-- SCHEDULE_JOB -->
+	<sql id="Base_Column_List">
+		schedule_job_id, 
+		job_name, 
+		alias_name, 
+		job_group, 
+		job_trigger,
+		status, 
+		cron_expression,
+		is_sync,
+		url,
+		description,
+		gmt_create,
+		gmt_modify
+	</sql>
+	
+	<select id="findByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SCHEDULE_JOB
+		where alias_name = #{roleId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findListByCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		SCHEDULE_JOB
+		where
+		1=1
+		<if test="aliasName != null"> and alias_name = #{aliasName, jdbcType=VARCHAR}</if>
+	</select>
+	
+	<insert id="insert" parameterType="quartz.cn.digitalpublishing.model.ScheduleJob">
+		insert into SCHEDULE_JOB
+		(schedule_job_id, 
+		job_name, 
+		alias_name, 
+		job_group, 
+		job_trigger,
+		status, 
+		cron_expression,
+		is_sync,
+		url,
+		description,
+		gmt_create)
+		values
+		(replace(uuid(),'-',''), 
+		#{jobName,jdbcType=VARCHAR},
+		#{aliasName,jdbcType=VARCHAR},
+		#{jobGroup,jdbcType=VARCHAR},
+		#{jobTrigger,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, 
+		#{cronExpression,jdbcType=VARCHAR},
+		#{isSync,jdbcType=TINYINT}, 
+		#{url,jdbcType=TINYINT}, 
+		#{description,jdbcType=TINYINT}, 
+		NOW())
+	</insert>
+	
+	<update id="updateById" parameterType="quartz.cn.digitalpublishing.model.ScheduleJob">
+		update SCHEDULE_JOB
+		<set>
+			<if test="cronExpression != null">
+				cron_expression = #{cronExpression,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where schedule_job_id = #{scheduleJobId,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SCHEDULE_JOB
+		where schedule_job_id = #{scheduleJobId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from
+		SCHEDULE_JOB
+		where schedule_job_id = #{scheduleJobId,jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

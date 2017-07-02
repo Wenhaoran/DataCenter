@@ -1,0 +1,126 @@
+/*重置样式*/
+
+html,
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+menu,
+input,
+button,
+textarea,
+p,
+blockquote,
+th,
+td {
+    margin: 0;
+    padding: 0;
+}
+
+pre,
+i,
+code,
+address,
+caption,
+cite,
+code,
+em,
+strong,
+th,
+tt {
+    font-size: 100%;
+    font-weight: normal;
+    font-style: normal;
+}
+
+p {
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table th,
+table td {
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+ul,
+ol,
+menu {
+    list-style: none outside none;
+}
+
+fieldset,
+img {
+    border: none;
+}
+
+input {
+    vertical-align: middle;
+}
+
+button {
+    cursor: pointer;
+}
+
+textarea {
+    vertical-align: middle;
+    resize: both;
+}
+
+h1 {
+    font-size: 22px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+body {
+    font: 14px 微软雅黑, Helvetica, sans-serif;
+    line-height: 1.5;
+    background-color: #fff;
+    color: #555555;
+}
+
+a {
+    text-decoration: none;
+    color: #555555;
+}
+
+a:hover {
+    color: #0193de;
+}
+
+input {
+    outline: none
+}

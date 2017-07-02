@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+<property name="APP_Name" value="design" /> 
+<property name="LOG_PATH" value="c://design_log" /> 
+
+<contextName>${APP_Name}</contextName> 
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" >
+		 <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+        	  <level>INFO</level>
+        </filter>	
+		<!-- 日志输出编码 -->  
+        <Encoding>UTF-8</Encoding> 
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%line]- %msg%n</pattern>
+			<!-- <pattern>[%-5p] [%d{HH:mm:ss}] %c - %m%n</pattern>  -->
+		</encoder>
+	</appender>
+	<!-- 按照每天生成错误日志文件 -->
+	<appender name="rollingFileError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		 <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	          <level>WARN</level>
+         </filter>
+		<!-- 日志输出编码 -->  
+       <Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 日志输出文件名 -->
+			<fileNamePattern>${LOG_PATH}/${APP_Name}-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- 日志保存的最大时间，日志保留30天 -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>		
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern> 			
+		</encoder>		
+		 <!--日志文件最大的大小-->  
+       	<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">  
+         <MaxFileSize>20MB</MaxFileSize> 
+       </triggeringPolicy> 
+	</appender>
+	
+	<!-- 按照每天生成日志文件 -->
+	<appender name="rollingFileInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		 <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	          <level>INFO</level>
+         </filter>
+		<!-- 日志输出编码 -->  
+       <Encoding>UTF-8</Encoding> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 日志输出文件名 -->
+			<fileNamePattern>${LOG_PATH}/${APP_Name}-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- 日志保存的最大时间，日志保留30天 -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>		
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>			
+		</encoder>		
+		 <!--日志文件最大的大小-->  
+       	<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">  
+         <MaxFileSize>20MB</MaxFileSize> 
+       </triggeringPolicy> 
+	</appender>
+	
+	
+	<!-- 在程序的开发测试阶段，可以调整level的级别，常用级别优先级为： -->
+	<!-- TRACE < DEBUG < INFO < WARN < ERROR  -->	 
+	
+	<logger name="org.apache.ibatis" level="INFO">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+	
+	<logger name="java.sql" level="INFO">
+	    <appender-ref ref="STDOUT"/>
+	</logger> 	  
+	  
+	
+	 	
+	<!-- 输出到控制台和文件，可定义更多的 Appender -->  
+    <root>  
+        <appender-ref ref="STDOUT" />  
+        <appender-ref ref="rollingFileError"/> 
+        <appender-ref ref="rollingFileInfo"/>    
+        
+    </root>         
+</configuration>
